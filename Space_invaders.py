@@ -18,7 +18,7 @@ pygame.display.set_caption("UNIBH Space Invaders")
 #Código Fundo
 #displaysurface = pygame.display.set_mode((screen_width, screen_height))
 #Fundo
-Imagem_Fundo = pygame.image.load("data/jogo2.jpg")
+Imagem_Fundo = pygame.image.load("data/Fundoo.png")
 
 # Score
 score_val = 0
@@ -104,26 +104,27 @@ def bullet(x, y):
 
 def level():
 
-    if (score_val >= 2 and score_val <= 82 and score_val < 26):
-        pygame.image.load('data/Laser.png')
+    if (score_val >= 2 and score_val <= 7):
+        global bulletImage
+        bulletImage = pygame.image.load('data/Laser.png')
+        global Imagem_Fundo
+        Imagem_Fundo = pygame.image.load("data/Fundo1.jpeg")
 
-        BackGround("data/jogo2.jpg")
-    elif (score_val < 81):
-        BackGround("data/jogo3.jpg")
-    elif (score_val > 81):
-        BackGround("data/jogo4.jpg")
+    elif (score_val >=8):
+        Imagem_Fundo = pygame.image.load("data/Fundoo.png")
     elif (score_val > 151):
-        BackGround("data/jogo5.jpg")
+        BackGround()
     elif (score_val == 200):
-        font.render("Parabéns você salvou a galáxia Anima")
+        BackGround()
+
+
 
 # game loop
 running = True
 while running:
-    #
-    #BackGround()
     # RGB
     screen.fill((0, 0, 0))
+    BackGround()
     level()
 
 
@@ -146,7 +147,7 @@ while running:
             if event.key == pygame.K_SPACE:
 
                 # Fixing the change of direction of bullet
-                if bullet_state == "rest":
+                if bullet_state is "rest":
                     bullet_X = player_X
                     bullet(bullet_X, bullet_Y)
                     bullet_sound = mixer.Sound('data/bullet.wav')
@@ -216,4 +217,4 @@ while running:
     player(player_X, player_Y)
     show_score(scoreX, scoreY)
 
-    pygame.display.update()
+    pygame.display.update(),
