@@ -18,7 +18,10 @@ pygame.display.set_caption("UNIBH Space Invaders")
 #Código Fundo
 #displaysurface = pygame.display.set_mode((screen_width, screen_height))
 #Fundo
-Imagem_Fundo = pygame.image.load("data/Fundoo.png")
+Imagem_Fundo = pygame.image.load("data/jogo2.jpg")
+Imagem_Fundo2 = pygame.image.load("data/jogo3.jpg")
+Imagem_Fundo3 = pygame.image.load("data/jogo4.jpg")
+Imagem_Fundo4 = pygame.image.load("data/jogo5.jpg")
 
 # Score
 score_val = 0
@@ -91,7 +94,7 @@ def player(x, y):
     screen.blit(playerImage, (x - 16, y + 10))
 
 def BackGround():
-    screen.blit(Imagem_Fundo,(0,0))
+    screen.blit(Imagem_Fundo, (0, 0))
 
 def invader(x, y, i):
     screen.blit(invaderImage[i], (x, y))
@@ -105,26 +108,25 @@ def bullet(x, y):
 def level():
 
     if (score_val >= 2 and score_val <= 7):
-        global bulletImage
-        bulletImage = pygame.image.load('data/Laser.png')
-        global Imagem_Fundo
-        Imagem_Fundo = pygame.image.load("data/Fundo1.jpeg")
+        pygame.image.load('data/Laser.png')
 
-    elif (score_val >=8):
-        Imagem_Fundo = pygame.image.load("data/Fundoo.png")
-    elif (score_val > 151):
-        BackGround()
+        screen.blit(Imagem_Fundo, (0, 0))
+    elif (score_val < 8):
+        screen.blit(Imagem_Fundo2, (0, 0))
+    elif (score_val < 9):
+        screen.blit(Imagem_Fundo3, (0, 0))
+    elif (score_val < 12):
+        screen.blit(Imagem_Fundo4, (0, 0))
     elif (score_val == 200):
-        BackGround()
-
-
+        font.render("Parabéns você salvou a galáxia Anima")
 
 # game loop
 running = True
 while running:
+    #
+    #BackGround()
     # RGB
     screen.fill((0, 0, 0))
-    BackGround()
     level()
 
 
@@ -147,7 +149,7 @@ while running:
             if event.key == pygame.K_SPACE:
 
                 # Fixing the change of direction of bullet
-                if bullet_state is "rest":
+                if bullet_state == "rest":
                     bullet_X = player_X
                     bullet(bullet_X, bullet_Y)
                     bullet_sound = mixer.Sound('data/bullet.wav')
@@ -167,7 +169,7 @@ while running:
     if bullet_Y <= 0:
         bullet_Y = 600
         bullet_state = "rest"
-    if bullet_state is "fire":
+    if bullet_state == "fire":
         bullet(bullet_X, bullet_Y)
         bullet_Y -= bullet_Ychange
 
@@ -217,4 +219,4 @@ while running:
     player(player_X, player_Y)
     show_score(scoreX, scoreY)
 
-    pygame.display.update(),
+    pygame.display.update()
