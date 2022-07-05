@@ -11,14 +11,14 @@ screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width,
                                   screen_height))
+FPS = 60
+CLOCK = pygame.time.Clock()
 
 # caption and icon
 pygame.display.set_caption("UNIBH Space Invaders")
 
-#Código Fundo
-#displaysurface = pygame.display.set_mode((screen_width, screen_height))
 #Fundo
-Imagem_Fundo = pygame.image.load("data/Fundoo.png")
+Imagem_Fundo = pygame.image.load("data/jogo2.jpg")
 
 # Score
 score_val = 0
@@ -29,6 +29,11 @@ font = pygame.font.Font('freesansbold.ttf', 20)
 # Game Over
 game_over_font = pygame.font.Font('freesansbold.ttf', 64)
 
+#Fase Level
+
+Fase_Num_text = font.render("Level 1",True, (255, 255, 255))
+
+
 
 def show_score(x, y):
     score = font.render("Points: " + str(score_val), True, (255, 255, 255))
@@ -36,13 +41,13 @@ def show_score(x, y):
 
 
 def game_over():
-    game_over_text = game_over_font.render("GAME OVER",
-                                           True, (255, 255, 255))
+    game_over_text = game_over_font.render("GAME OVER",True, (255, 255, 255))
+
     screen.blit(game_over_text, (190, 250))
 
 
 # Background Sound
-mixer.music.load('data/SomFundo.wav')
+mixer.music.load('data/background.wav')
 mixer.music.play()
 
 # player
@@ -90,8 +95,6 @@ def isCollision(x1, x2, y1, y2):
 def player(x, y):
     screen.blit(playerImage, (x - 16, y + 10))
 
-def BackGround():
-    screen.blit(Imagem_Fundo,(0,0))
 
 def invader(x, y, i):
     screen.blit(invaderImage[i], (x, y))
@@ -102,20 +105,43 @@ def bullet(x, y):
     screen.blit(bulletImage, (x, y))
     bullet_state = "fire"
 
+def BackGround():
+     screen.blit(Imagem_Fundo, (0, 0))
+
+def Fase_Num():
+    screen.blit(Fase_Num_text, (300, 30))
+
 def level():
 
-    if (score_val >= 2 and score_val <= 7):
-        global bulletImage
-        bulletImage = pygame.image.load('data/Laser.png')
-        global Imagem_Fundo
-        Imagem_Fundo = pygame.image.load("data/Fundo1.jpeg")
+    global Fase_Num_text,Imagem_Fundo, bulletImage
 
-    elif (score_val >=8):
-        Imagem_Fundo = pygame.image.load("data/Fundoo.png")
-    elif (score_val > 151):
-        BackGround()
-    elif (score_val == 200):
-        BackGround()
+    if (score_val == 2):
+        Fase_Num_text = font.render("Fase 2", True, (255, 255, 255))
+
+        #Mudar alien todos
+
+        Imagem_Fundo = pygame.image.load("data/jogo3.jpg")
+
+    if (score_val == 80):
+
+        #Adicionar pontuação +4
+
+        Fase_Num_text = font.render("Fase 3", True, (255, 255, 255))
+
+        bulletImage = pygame.image.load('data/Laser.png')
+
+        Imagem_Fundo = pygame.image.load("data/jogo4.jpg")
+
+    if (score_val == 151):
+        Fase_Num_text = font.render("Fase 4", True, (255, 255, 255))
+
+        #Altera tiro da nave e pontuação +8
+        #Especial
+
+        Imagem_Fundo = pygame.image.load("data/jogo5.jpg")
+
+    if (score_val == 200):
+        Fase_Num_text = font.render("Win", True, (255, 255, 255))
 
 
 
@@ -123,9 +149,11 @@ def level():
 running = True
 while running:
     # RGB
-    screen.fill((0, 0, 0))
+
     BackGround()
+    Fase_Num()
     level()
+
 
 
     for event in pygame.event.get():
@@ -202,6 +230,9 @@ while running:
 
 
 
+
+
+
         invader(invader_X[i], invader_Y[i], i)
 
 
@@ -216,5 +247,5 @@ while running:
 
     player(player_X, player_Y)
     show_score(scoreX, scoreY)
-
     pygame.display.update()
+CLOCK.tick(FPS)
